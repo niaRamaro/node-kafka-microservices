@@ -1,6 +1,7 @@
-import { Arg, Mutation, Query, Resolver } from 'type-graphql'
+import { Arg, Args, Mutation, Query, Resolver } from 'type-graphql'
 import { Service } from 'typedi'
 
+import ListArgs from '../types/ListArgs'
 import Product from '../types/Product'
 import { ProductService } from '../../services/ProductService'
 
@@ -10,8 +11,8 @@ export default class ProductResolver {
     constructor(private productService: ProductService) {}
 
     @Query((returns) => [Product])
-    products() {
-        return this.productService.findAll()
+    products(@Args() { skip, take }: ListArgs) {
+        return this.productService.findAll({ skip, take })
     }
 
     @Mutation((returns) => Product)

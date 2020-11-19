@@ -1,9 +1,10 @@
 import { Service } from 'typedi'
 
 import KafkaProducerService from './KafkaProducerService'
+import ListArgs from '../graphql/types/ListArgs'
+import MongoService, { PRODUCT_MONGO_COLLECTION } from './MongoService'
 import Product from '../graphql/types/Product'
 import { TOPICS } from '../server'
-import MongoService, { PRODUCT_MONGO_COLLECTION } from './MongoService'
 
 @Service()
 export class ProductService {
@@ -23,10 +24,12 @@ export class ProductService {
         }
     }
 
-    async findAll(): Promise<Product[]> {
+    async findAll({ skip, take }: ListArgs): Promise<Product[]> {
         return await MongoService.database
             .collection(PRODUCT_MONGO_COLLECTION)
             .find()
+            .skip(skip)
+            .limit(take)
             .toArray()
     }
 }
