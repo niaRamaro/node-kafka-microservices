@@ -7,6 +7,8 @@ import { buildSchema } from 'type-graphql'
 import KafkaProducerService from './services/KafkaProducerService'
 import resolvers from './graphql/resolvers'
 import setupKafkaProducer from './setupKafkaProducer'
+import MongoService from './services/MongoService'
+import setupMongo from './setupMongo'
 
 export enum TOPICS {
     PRODUCTS_TO_ADD_TOPIC = 'products-to-add'
@@ -15,6 +17,7 @@ export enum TOPICS {
 async function start() {
     try {
         KafkaProducerService.setProducer(await setupKafkaProducer())
+        MongoService.database = await setupMongo()
 
         const schema = await buildSchema({
             resolvers,
