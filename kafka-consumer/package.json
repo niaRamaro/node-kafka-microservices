@@ -4,7 +4,7 @@
     "main": "index.js",
     "license": "MIT",
     "scripts": {
-        "start": "ts-node-dev ./src/consumer.ts"
+        "start": "ts-node-dev ./src/main.ts"
     },
     "dependencies": {
         "mongodb": "^3.6.3",
