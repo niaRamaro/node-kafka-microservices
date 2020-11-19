@@ -3,13 +3,7 @@ import { Service } from 'typedi'
 import KafkaProducerService from './KafkaProducerService'
 import Product from '../graphql/types/Product'
 import { TOPICS } from '../server'
-
-const products = [...Array(5).keys()].map((_, index) => ({
-    uuid: `${index}`,
-    name: `Name ${index}`,
-    description: `Description ${index}`,
-    price: 5
-})) as Product[]
+import MongoService, { PRODUCT_MONGO_COLLECTION } from './MongoService'
 
 @Service()
 export class ProductService {
@@ -29,7 +23,10 @@ export class ProductService {
         }
     }
 
-    findAll(): Product[] {
-        return products
+    async findAll(): Promise<Product[]> {
+        return await MongoService.database
+            .collection(PRODUCT_MONGO_COLLECTION)
+            .find()
+            .toArray()
     }
 }
