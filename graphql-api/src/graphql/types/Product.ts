@@ -1,19 +1,14 @@
-import { Field, ID, ObjectType } from 'type-graphql'
+import { Field, ID, InputType, ObjectType } from 'type-graphql'
 
+@InputType('ProductInput')
 @ObjectType()
 export default class Product {
-    constructor({ name, price, description }: any) {
-        this.name = name
-        this.price = price
-        this.description = description
-    }
-
     @Field((type) => ID)
-    id!: string
+    uuid!: string
     @Field()
-    name: string
+    name!: string
     @Field()
-    price: number
+    price!: number
     @Field()
-    description: string
+    description!: string
 }

@@ -2,7 +2,6 @@ import { Arg, Mutation, Query, Resolver } from 'type-graphql'
 import { Service } from 'typedi'
 
 import Product from '../types/Product'
-import ProductInput from '../types/ProductInput'
 import { ProductService } from '../../services/ProductService'
 
 @Service()
@@ -16,9 +15,11 @@ export default class ProductResolver {
     }
 
     @Mutation((returns) => Product)
-    async addProduct(
-        @Arg('newProduct') newProduct: ProductInput
-    ): Promise<Product> {
-        return await this.productService.addNew(newProduct)
+    async addProduct(@Arg('newProduct') newProduct: Product): Promise<Product> {
+        if (await this.productService.addNew(newProduct)) {
+            return newProduct
+        } else {
+            throw new Error('Internal Server Error')
+        }
     }
 }
