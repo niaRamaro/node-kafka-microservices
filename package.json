@@ -3,6 +3,7 @@
     "version": "1.0.0",
     "private": true,
     "workspaces": [
-        "graphql-api"
+        "graphql-api",
+        "kafka-consumer"
     ]
 }

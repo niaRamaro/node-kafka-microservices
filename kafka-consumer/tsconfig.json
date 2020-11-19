@@ -1,0 +1,15 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "esModuleInterop": true,
+        "target": "es2018",
+        "moduleResolution": "node",
+        "strict": true,
+        "outDir": "dist",
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "lib": ["es2018", "esnext.asynciterable"]
+    },
+    "include": ["./src/**/*"],
+    "exclude": ["node_modules"]
+}
