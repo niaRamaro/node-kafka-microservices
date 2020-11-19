@@ -2,6 +2,10 @@
     "name": "node-kafka-microservices",
     "version": "1.0.0",
     "private": true,
+    "scripts": {
+        "start-api": "yarn workspace graphql-api start",
+        "start-consumer": "yarn workspace kafka-consumer start"
+    },
     "workspaces": [
         "graphql-api",
         "kafka-consumer"
