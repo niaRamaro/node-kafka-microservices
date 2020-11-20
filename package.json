@@ -3,11 +3,18 @@
     "version": "1.0.0",
     "private": true,
     "scripts": {
+        "dev-api": "yarn workspace graphql-api dev",
+        "dev-consumer": "yarn workspace kafka-consumer dev",
         "start-api": "yarn workspace graphql-api start",
-        "start-consumer": "yarn workspace kafka-consumer start"
+        "start-consumer": "yarn workspace kafka-consumer start",
+        "dev": "concurrently \"yarn dev-api\" \"yarn dev-consumer\"",
+        "start": "concurrently \"yarn start-api\" \"yarn start-consumer\""
     },
     "workspaces": [
         "graphql-api",
         "kafka-consumer"
-    ]
+    ],
+    "dependencies": {
+        "concurrently": "^5.3.0"
+    }
 }
