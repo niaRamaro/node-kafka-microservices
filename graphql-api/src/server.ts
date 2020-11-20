@@ -14,6 +14,8 @@ export enum TOPICS {
     PRODUCTS_TO_ADD_TOPIC = 'products-to-add'
 }
 
+const port = process.env.PORT || 4000
+
 async function start() {
     try {
         KafkaProducerService.setProducer(await setupKafkaProducer())
@@ -25,7 +27,9 @@ async function start() {
         })
 
         const server = new ApolloServer({ schema })
-        const { url } = await server.listen()
+        const { url } = await server.listen({
+            port
+        })
 
         console.log(`Server running on : ${url}`)
     } catch (e) {
