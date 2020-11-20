@@ -3,6 +3,7 @@ import { Service } from 'typedi'
 
 import ListArgs from '../types/ListArgs'
 import Product from '../types/Product'
+import ProductList from '../types/ProductList'
 import { ProductService } from '../../services/ProductService'
 
 @Service()
@@ -10,8 +11,8 @@ import { ProductService } from '../../services/ProductService'
 export default class ProductResolver {
     constructor(private productService: ProductService) {}
 
-    @Query((returns) => [Product])
-    products(@Args() { skip, take }: ListArgs) {
+    @Query((returns) => ProductList)
+    products(@Args() { skip, take }: ListArgs): Promise<ProductList> {
         return this.productService.findAll({ skip, take })
     }
 

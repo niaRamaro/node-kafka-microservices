@@ -4,6 +4,7 @@ import KafkaProducerService from './KafkaProducerService'
 import ListArgs from '../graphql/types/ListArgs'
 import MongoService, { PRODUCT_MONGO_COLLECTION } from './MongoService'
 import Product from '../graphql/types/Product'
+import ProductList from '../graphql/types/ProductList'
 import { TOPICS } from '../server'
 
 @Service()
@@ -24,12 +25,17 @@ export class ProductService {
         }
     }
 
-    async findAll({ skip, take }: ListArgs): Promise<Product[]> {
-        return await MongoService.database
-            .collection(PRODUCT_MONGO_COLLECTION)
-            .find()
-            .skip(skip)
-            .limit(take)
-            .toArray()
+    async findAll({ skip, take }: ListArgs): Promise<ProductList> {
+        const collection = MongoService.database.collection(
+            PRODUCT_MONGO_COLLECTION
+        )
+
+        const count = await collection.countDocuments()
+
+        return {
+            count,
+            hasMore: skip + take < count,
+            items: await collection.find().skip(skip).limit(take).toArray()
+        }
     }
 }
