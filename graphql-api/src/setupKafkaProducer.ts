@@ -1,5 +1,4 @@
 import { Producer } from 'node-rdkafka'
-import { TOPICS } from './server'
 
 const kafkaHost = process.env.KAFKA_HOST || 'localhost'
 const kafkaPort = process.env.KAFKA_PORT || '9092'

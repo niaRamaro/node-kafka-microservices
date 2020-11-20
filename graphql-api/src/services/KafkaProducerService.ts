@@ -4,7 +4,7 @@ import { TOPICS } from '../server'
 
 export default class KafkaProducerService {
     private static producer: Producer
-    private static acknowledgmentsMap = new Map<string, () => void>()
+    private static acknowledgementCallbacks = new Map<string, () => void>()
 
     static setProducer(producer: Producer) {
         this.producer = producer
@@ -12,9 +12,9 @@ export default class KafkaProducerService {
         this.producer.on('delivery-report', (err, { key }) => {
             if (!err && key) {
                 const formatedKey = key.toString()
-                const callback = this.acknowledgmentsMap.get(formatedKey)
+                const callback = this.acknowledgementCallbacks.get(formatedKey)
                 if (callback) {
-                    this.acknowledgmentsMap.delete(formatedKey)
+                    this.acknowledgementCallbacks.delete(formatedKey)
                     callback()
                 }
             }
@@ -41,21 +41,21 @@ export default class KafkaProducerService {
             )
 
             if (!isMessageSent) {
-                reject()
+                reject(new Error(`Message with key ${key} could not be sent`))
                 return
             }
 
             if (waitForAcknowledgment) {
-                this.acknowledgmentsMap.set(key, resolve)
+                this.acknowledgementCallbacks.set(key, resolve)
 
                 setTimeout(
                     () =>
                         reject(
                             new Error(
-                                'Kafka message acknowledgement took too long'
+                                `Message acknowledgement for ${key} took too long`
                             )
                         ),
-                    10 * 1000
+                    20 * 1000
                 )
             } else {
                 resolve()
